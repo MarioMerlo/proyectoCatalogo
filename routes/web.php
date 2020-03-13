@@ -12,5 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return view('index');
 });
+
+
+##########################
+### CRUD DE CATEGORÍAS ###
+##########################
+
+Route::get('/adminCategorias', 'CategoriaController@index'); // indico petición luego el controlador, y luego de la @ el método al que llamo.
+
+
