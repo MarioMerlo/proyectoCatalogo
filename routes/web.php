@@ -23,4 +23,6 @@ Route::get('/', function () {
 
 Route::get('/adminCategorias', 'CategoriaController@index'); // indico petición luego el controlador, y luego de la @ el método al que llamo.
 
+Route::get('/adminMarcas', 'MarcaController@index');
 
+Route::get('/adminUsuarios', 'UsuarioController@index');
