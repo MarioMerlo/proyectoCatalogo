@@ -23,6 +23,25 @@ Route::get('/', function () {
 
 Route::get('/adminCategorias', 'CategoriaController@index'); // indico petición luego el controlador, y luego de la @ el método al que llamo.
 
+
+
+##########################
+##### CRUD DE MARCAS #####
+##########################
+
 Route::get('/adminMarcas', 'MarcaController@index');
 
+
+
+##########################
+#### CRUD DE USUARIOS ####
+##########################
+
 Route::get('/adminUsuarios', 'UsuarioController@index');
+
+
+##########################
+#### CRUD DE PRODUCTOS ###
+##########################
+
+Route::get('/adminProductos', 'ProductoController@index');

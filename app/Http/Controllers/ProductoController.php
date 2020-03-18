@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Marca;
+use App\Producto;
 use Illuminate\Http\Request;
 
-class MarcaController extends Controller
+class ProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,8 @@ class MarcaController extends Controller
     public function index()
     {
         //
-        //$marcas = Marca::all();
-        $marcas = Marca::paginate(7);
-        return view('adminMarcas', ['marcas'=>$marcas]);
+        $productos = Producto::with('getMarca', 'getCategoria')->get(); // aca llame al metodo del model donde hace la relacion de tablas
+        return view('adminProductos', ['productos'=>$productos]);
     }
 
     /**
