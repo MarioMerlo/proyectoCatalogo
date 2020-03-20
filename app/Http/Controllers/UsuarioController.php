@@ -28,6 +28,7 @@ class UsuarioController extends Controller
     public function create()
     {
         //
+        return view('/formAgregarUsuario');
     }
 
     /**
@@ -39,6 +40,33 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
         //
+        $usuNombre      = $request->input('usuNombre');
+        $usuApellido    = $request->input('usuApellido');
+        $usuEmail       = $request->input('usuEmail');
+        $usuPass        = $request->input('usuPass');
+        $usuEstado      = $request->input('usuEstado');
+
+        $validacion = $request->validate(
+            [
+                'usuNombre'=>'required|min:3|max:50',
+                'usuApellido'=>'required|min:3|max:50',
+                'usuEmail'=>'required|email',
+                'usuPass'=>'required|min:3|max:50',
+                'usuEstado'=>'required'
+            ]
+        );
+
+        $Usuario = new Usuario;
+        $Usuario->usuNombre = $usuNombre;
+        $Usuario->usuApellido = $usuApellido;
+        $Usuario->usuEmail = $usuEmail;
+        $Usuario->usuPass = $usuPass;
+        $Usuario->usuEstado = $usuEstado;
+
+        // Aca guardo el dato
+        $Usuario->save();
+        return redirect('/adminUsuarios')
+            ->with('mensaje','Usuario: '.$usuNombre.' '.$usuApellido.' agregado correctamente');
     }
 
     /**

@@ -22,7 +22,8 @@ Route::get('/', function () {
 ##########################
 
 Route::get('/adminCategorias', 'CategoriaController@index'); // indico petición luego el controlador, y luego de la @ el método al que llamo.
-
+Route::get('/agregarCategoria', 'CategoriaController@create');
+Route::post('/agregarCategoria', 'CategoriaController@store');
 
 
 ##########################
@@ -39,6 +40,8 @@ Route::post('/agregarMarca', 'MarcaController@store');
 ##########################
 
 Route::get('/adminUsuarios', 'UsuarioController@index');
+Route::get('/agregarUsuario', 'UsuarioController@create');
+Route::post('/agregarUsuario', 'UsuarioController@store');
 
 
 ##########################
