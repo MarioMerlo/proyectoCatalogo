@@ -30,7 +30,8 @@ Route::get('/adminCategorias', 'CategoriaController@index'); // indico petición
 ##########################
 
 Route::get('/adminMarcas', 'MarcaController@index');
-
+Route::get('/agregarMarca', 'MarcaController@create');
+Route::post('/agregarMarca', 'MarcaController@store');
 
 
 ##########################
@@ -45,3 +46,5 @@ Route::get('/adminUsuarios', 'UsuarioController@index');
 ##########################
 
 Route::get('/adminProductos', 'ProductoController@index');
+Route::get('/agregarProducto', 'ProductoController@create');
+
