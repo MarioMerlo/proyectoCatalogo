@@ -39,6 +39,6 @@
     </table>
 
     <!-- Esto crea el paginador, pero debo haber usado el metodo paginate -->
-    {{$marcas->links()}}
+    {{ $marcas->links() }}
 
 @endsection

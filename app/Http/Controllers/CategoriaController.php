@@ -15,7 +15,8 @@ class CategoriaController extends Controller
     public function index()
     {
         //
-        $categorias = Categoria::all();
+        // $categorias = Categoria::all();
+        $categorias = Categoria::paginate(5);
 //        dd($categorias);
         return view('adminCategorias', ['categorias'=>$categorias]);
     }

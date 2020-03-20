@@ -17,7 +17,8 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        $productos = Producto::with('getMarca', 'getCategoria')->get(); // aca llame al metodo del model donde hace la relacion de tablas
+        //$productos = Producto::with('getMarca', 'getCategoria')->get(); // aca llame al metodo del model donde hace la relacion de tablas
+        $productos = Producto::with('getMarca', 'getCategoria')->paginate(5);
         return view('adminProductos', ['productos'=>$productos]);
     }
 

@@ -38,4 +38,6 @@
         </tbody>
     </table>
 
+    {{ $categorias->links() }}
+
 @endsection
