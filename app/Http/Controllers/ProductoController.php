@@ -40,6 +40,22 @@ class ProductoController extends Controller
                             ]);
     }
 
+    ## Metodo para subir la imagen
+    private function subirImagen(Request $request) {
+        ##upload imagen
+        $prdImagen = 'noDisponible.jpg'; // Valor predeterminado si no envio imagen
+        if( $request->file('prdImagen') ){
+            // Nombre original de la imagen
+            // $prdImagen= $request->prdImagen->getClientOriginalName();
+
+            // Nombre concatenado con la fecha
+            $prdImagen = time().'.'.$request->file('prdImagen')->getClientOriginalExtension();
+
+            // Subir imagen
+            $request->prdImagen->move(public_path('img/productos/'), $prdImagen); // indico donde va la imagen y con que nombre debe ir
+        }
+        return $prdImagen;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -48,7 +64,30 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validacion
+        $validacion = $request->validate(
+            [
+                'prdNombre'=>'required|min:5|max:50',
+                'prdPrecio'=>'required|numeric|min:0',
+                'prdPresentacion'=>'required|min:5|max:150',
+                'prdStock'=>'required|integer|min:0',
+                'prdImagen'=>'image|mimes:jpg,jpeg,png,gif,svg|max:2048'
+            ]
+        );
+        $prdImagen = $this->subirImagen($request);
+
+        $Producto = new Producto();
+        $Producto->prdNombre        = $request->input('prdNombre');
+        $Producto->prdPrecio        = $request->input('prdPrecio');
+        $Producto->idMarca          = $request->input('idMarca');
+        $Producto->idCategoria      = $request->input('idCategoria');
+        $Producto->prdPresentacion  = $request->input('prdPresentacion');
+        $Producto->prdStock         = $request->input('prdStock');
+        $Producto->prdImagen        = $prdImagen; #ESto lo estoy tomando del upload
+
+        $Producto->save();
+        return redirect('/adminProductos')
+            ->with('mensaje','Producto: '.$Producto->prdNombre .' agregado correctamente');
     }
 
     /**
@@ -68,9 +107,17 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idProducto)
     {
         //
+        $Producto = Producto::with('getMarca', 'getCategoria')->find($idProducto);
+        $marcas = Marca::all();
+        $categorias = Categoria::all();
+        return view('formModificarProducto', [
+            'producto'=>$Producto,
+            'marcas'=>$marcas,
+            'categorias'=>$categorias
+        ]);
     }
 
     /**

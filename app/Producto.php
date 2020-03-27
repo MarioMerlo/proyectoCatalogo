@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Producto extends Model
 {
     //
+    protected $primaryKey = 'idProducto';
+    public $timestamps = false;
+
     ## Relación a tabla Marcas
     public function getMarca() //El nombre es indistitno. Le ponemos get, porque traera marcas
     {

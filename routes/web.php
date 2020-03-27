@@ -50,4 +50,6 @@ Route::post('/agregarUsuario', 'UsuarioController@store');
 
 Route::get('/adminProductos', 'ProductoController@index');
 Route::get('/agregarProducto', 'ProductoController@create');
+Route::post('/agregarProducto', 'ProductoController@store');
+Route::get('/modificarProducto/{idProducto}','ProductoController@edit');
 
