@@ -20,6 +20,8 @@
     <div class="alert bg-light p-3">
         <form action="/modificarProducto" method="post" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="idProducto" value="{{ $producto->idProducto }}">
+
             Nombre: <br>
             <input type="text" name="prdNombre" class="form-control" value="{{  old('prdNombre', $producto['prdNombre']) }}">
             <br>
@@ -58,6 +60,7 @@
             Imagen: <br>
             <img src="/img/productos/{{$producto->prdImagen}}" alt="" class="img-thumbnail">
             <input type="file" name="prdImagen" class="form-control">
+            <input type="hidden" name="imagenOriginal" value="{{ $producto->prdImagen }}">
             <br>
             <input type="submit" value="Modificar Producto" class="btn btn-secondary mb-3">
             <a href="/adminProductos" class="btn btn-outline-secondary mb-3">Volver al panel de Productos</a>

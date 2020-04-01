@@ -52,4 +52,7 @@ Route::get('/adminProductos', 'ProductoController@index');
 Route::get('/agregarProducto', 'ProductoController@create');
 Route::post('/agregarProducto', 'ProductoController@store');
 Route::get('/modificarProducto/{idProducto}','ProductoController@edit');
+Route::post('/modificarProducto','ProductoController@update');
+Route::get('/eliminarProducto/{idProducto}','ProductoController@eliminar');
+Route::post('eliminarProducto', 'ProductoController@destroy');
 

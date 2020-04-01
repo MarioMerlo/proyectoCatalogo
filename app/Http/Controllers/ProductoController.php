@@ -43,8 +43,13 @@ class ProductoController extends Controller
     ## Metodo para subir la imagen
     private function subirImagen(Request $request) {
         ##upload imagen
-        $prdImagen = 'noDisponible.jpg'; // Valor predeterminado si no envio imagen
-        if( $request->file('prdImagen') ){
+        $prdImagen = 'noDisponible.jpg'; // Valor predeterminado si no envio image EN alta
+
+        if( $request->imagenOriginal ) { ## Si no se envia imagen en MODIFICACION
+            $prdImagen = $request->imagenOriginal;
+        }
+
+        if( $request->file('prdImagen') ){ ## Si se envia una imagen
             // Nombre original de la imagen
             // $prdImagen= $request->prdImagen->getClientOriginalName();
 
@@ -67,16 +72,16 @@ class ProductoController extends Controller
         // validacion
         $validacion = $request->validate(
             [
-                'prdNombre'=>'required|min:5|max:50',
+                'prdNombre'=>'required|min:3|max:50',
                 'prdPrecio'=>'required|numeric|min:0',
-                'prdPresentacion'=>'required|min:5|max:150',
+                'prdPresentacion'=>'required|min:3|max:150',
                 'prdStock'=>'required|integer|min:0',
                 'prdImagen'=>'image|mimes:jpg,jpeg,png,gif,svg|max:2048'
             ]
         );
         $prdImagen = $this->subirImagen($request);
 
-        $Producto = new Producto();
+        $Producto = new Producto(); ## ESto es para instanciar un objeto nuevo
         $Producto->prdNombre        = $request->input('prdNombre');
         $Producto->prdPrecio        = $request->input('prdPrecio');
         $Producto->idMarca          = $request->input('idMarca');
@@ -127,10 +132,48 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        // validacion
+        $validacion = $request->validate(
+            [
+                'prdNombre'=>'required|min:3|max:50',
+                'prdPrecio'=>'required|numeric|min:0',
+                'prdPresentacion'=>'required|min:3|max:150',
+                'prdStock'=>'required|integer|min:0',
+                'prdImagen'=>'image|mimes:jpg,jpeg,png,gif,svg|max:2048'
+            ]
+        );
+        ## upload de imagen
+        $prdImagen = $this->subirImagen($request);
+
+
+        $Producto = Producto::find( $request->input('idProducto') ); ## Esto es para encontrar el poducto a cambiar
+
+        $Producto->prdNombre        = $request->input('prdNombre');
+        $Producto->prdPrecio        = $request->input('prdPrecio');
+        $Producto->idMarca          = $request->input('idMarca');
+        $Producto->idCategoria      = $request->input('idCategoria');
+        $Producto->prdPresentacion  = $request->input('prdPresentacion');
+        $Producto->prdStock         = $request->input('prdStock');
+        $Producto->prdImagen        = $prdImagen; #ESto lo estoy tomando del upload
+
+        $Producto->save();
+
+        return redirect('/adminProductos')
+            ->with('mensaje','Producto: '.$Producto->prdNombre .' modificado correctamente');
+
+
     }
+
+    // Generamos el formulario con la confirmacion de baja
+    public function eliminar($idProducto)
+    {
+        $Producto = Producto::with('getMarca', 'getCategoria')->find($idProducto);
+        return view('formEliminarProducto', [ 'producto' => $Producto ]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -138,8 +181,15 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        $Producto = Producto::find( $request->input('idProducto') ); ## Esto es para encontrar el poducto a eliminar
+        $Producto->delete();
+
+        return redirect('/adminProductos')
+            ->with('mensaje','Producto: '.$Producto->prdNombre .' eliminado correctamente');
+
+
     }
 }
